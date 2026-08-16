@@ -52,21 +52,28 @@ export const SearchCommand = () => {
     <CommandDialog open={isOpen} onOpenChange={onClose}>
       <CommandInput placeholder={`Search ${user?.firstName}'s Workspace`} />
       <CommandList>
-        <CommandEmpty className="h-50 flex items-center justify-center" >No Results Found</CommandEmpty>
+        <CommandEmpty className="h-50 flex items-center justify-center">
+          No Results Found
+        </CommandEmpty>
         <CommandGroup heading="Documents">
           {documents?.map((doc) => (
             <CommandItem
               key={doc._id}
               value={`${doc._id}-${doc.title}`}
               title={doc.title}
-              onSelect={onSelect}
+              onSelect={() => onSelect(doc._id)}
             >
               {doc.icon ? (
                 <p className="mr-2 text-[18px]">{doc.icon}</p>
               ) : (
-                <FileIcon className="" mr-2 h-4 w-4 />
+                <FileIcon className="mr-2 h-4 w-4" />
               )}
               <span>{doc.title}</span>
+              {doc.source === "ai" && (
+                <span className="ml-auto text-[10px] uppercase tracking-wide text-muted-foreground">
+                  AI
+                </span>
+              )}
             </CommandItem>
           ))}
         </CommandGroup>

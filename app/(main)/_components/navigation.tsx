@@ -29,7 +29,9 @@ import {
 import TrashBox from "./trash-box";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
+import { AI_CHAT_RAIL_WIDTH, useAiChat } from "@/hooks/use-ai-chat";
 import Navbar from "./navbar";
+import { ProjectList } from "./project-list";
 
 const Navigation = () => {
   const params = useParams();
@@ -51,6 +53,7 @@ const Navigation = () => {
 
   const search = useSearch();
   const settings = useSettings();
+  const aiChat = useAiChat();
 
   useEffect(() => {
     return () => {
@@ -196,6 +199,8 @@ const Navigation = () => {
           </div>
         </div>
 
+        <ProjectList />
+
         <div onClick={handleCreate} className="pt-4 px-2">
           <div className={cn(
             "flex items-center gap-1 px-2 py-1.5 cursor-pointer group/section",
@@ -275,8 +280,15 @@ const Navigation = () => {
         />
       </aside>
       <div
+        style={
+          isMobile
+            ? undefined
+            : {
+                paddingRight: aiChat.isOpen ? aiChat.width : AI_CHAT_RAIL_WIDTH,
+              }
+        }
         className={cn(
-          "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]",
+          "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)] pointer-events-none",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "left-0 w-full"
         )}
@@ -288,7 +300,7 @@ const Navigation = () => {
            openSidebar={openSidebar}
            />
         ) : (
-          <nav className="bg-transparent px-3 py-2 w-full">
+          <nav className="bg-transparent px-3 py-2 w-full pointer-events-auto">
             {isCollapsed && (
               <MenuIcon
                 onClick={openSidebar}

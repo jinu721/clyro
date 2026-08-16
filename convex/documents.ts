@@ -17,6 +17,7 @@ export const create = mutation({
       userId: userId,
       isArchived: false,
       isPublished: false,
+      source: "manual",
     });
   },
 });
@@ -202,7 +203,16 @@ export const getById = query({
     }
     if (!user) throw new Error("Unauthorized");
     const userId = user.subject;
-    if (document.userId !== userId) throw new Error("Unauthorized");
+    if (document.userId !== userId) {
+      if (!document.projectId) throw new Error("Unauthorized");
+      const membership = await ctx.db
+        .query("projectMembers")
+        .withIndex("by_project_user", (q) =>
+          q.eq("projectId", document.projectId!).eq("userId", userId)
+        )
+        .unique();
+      if (!membership) throw new Error("Unauthorized");
+    }
     return document;
   },
 });
@@ -223,7 +233,18 @@ export const update = mutation({
     const { id, ...rest } = args;
     const document = await ctx.db.get(id);
     if (!document) throw new Error("Document Not Found");
-    if (document.userId !== userId) throw new Error("Unauthorized");
+    if (document.userId !== userId) {
+      if (!document.projectId) throw new Error("Unauthorized");
+      const membership = await ctx.db
+        .query("projectMembers")
+        .withIndex("by_project_user", (q) =>
+          q.eq("projectId", document.projectId!).eq("userId", userId)
+        )
+        .unique();
+      if (!membership || membership.role === "viewer") {
+        throw new Error("Unauthorized");
+      }
+    }
     return await ctx.db.patch(id, rest);
   },
 });

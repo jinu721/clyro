@@ -4,7 +4,7 @@ import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { useCoverImage } from "@/hooks/use-cover-image";
 import { useMutation } from "convex/react";
-import { ImageIcon, Smile, X } from "lucide-react";
+import { ImageIcon, Smile, Sparkles, X } from "lucide-react";
 import { useRef, useState } from "react";
 import TextAreaAutoSize from "react-textarea-autosize";
 
@@ -118,6 +118,15 @@ const Toolbar = ({ initialData, preview }: ToolbarProps) => {
       </div>
       
       <div className="pl-[54px]">
+        {initialData.source === "ai" && (
+          <div className="mb-2 inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2 py-1 text-xs text-gray-600 dark:bg-white/5 dark:text-gray-400">
+            <Sparkles className="h-3 w-3" />
+            AI study notes
+            {initialData.aiMeta?.difficulty
+              ? ` · ${initialData.aiMeta.difficulty}`
+              : ""}
+          </div>
+        )}
         {isEditing && !preview ? (
           <TextAreaAutoSize
             ref={inputRef}

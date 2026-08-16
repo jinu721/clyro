@@ -23,7 +23,7 @@ const Navbar = ({ isCollapsed, openSidebar }: NavbarProps) => {
 
   if (document === undefined) {
     return (
-      <nav className="flex bg-transparent px-3 py-2 w-full justify-between">
+      <nav className="flex items-center bg-transparent px-3 py-2 w-full justify-between pointer-events-auto">
         <Title.Skeleton />
         <Menu.Skeleton />
       </nav>
@@ -32,16 +32,16 @@ const Navbar = ({ isCollapsed, openSidebar }: NavbarProps) => {
 
   return (
     <>
-      <nav className="flex bg-transparent px-3 py-2 w-full">
+      <nav className="flex items-center gap-x-2 bg-transparent px-3 py-2 w-full pointer-events-auto">
         {isCollapsed && (
           <MenuIcon
             onClick={openSidebar}
-            className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-gray-300 transition-all duration-200 hover:scale-110 mt-2 mr-2"
+            className="h-4 w-4 shrink-0 text-muted-foreground cursor-pointer hover:text-gray-300 transition-all duration-200 hover:scale-110"
           />
         )}
-        <div className="w-full flex item-center justify-between">
+        <div className="w-full min-w-0 flex items-center justify-between gap-x-2">
           <Title initialData={document} />
-          <div className="flex item-center gap-x-2">
+          <div className="flex items-center gap-x-1 shrink-0">
             <Publish initialData={document} />
             <Menu documentId={document._id} />
           </div>

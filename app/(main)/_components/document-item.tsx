@@ -34,6 +34,7 @@ interface DocumentItemProps {
   label: string;
   onClick: () => void;
   icon: LucideIcon;
+  isAi?: boolean;
 }
 
 const DocumentItem = ({
@@ -46,6 +47,7 @@ const DocumentItem = ({
   label,
   onClick,
   icon: Icon,
+  isAi,
 }: DocumentItemProps) => {
   const router = useRouter();
   const create = useMutation(api.documents.create);
@@ -149,6 +151,11 @@ const DocumentItem = ({
       </div>
 
       <span className="flex-1 truncate font-medium">{label}</span>
+      {isAi && (
+        <span className="text-[10px] uppercase tracking-wide text-gray-400 dark:text-gray-500 shrink-0">
+          AI
+        </span>
+      )}
 
       <div
         className={cn(

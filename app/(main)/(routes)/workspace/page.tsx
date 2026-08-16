@@ -13,18 +13,18 @@ const WorkspacePage = () => {
   const create = useMutation(api.documents.create);
 
   const handleCreate = async () => {
-    const promise =  create({
+    const promise = create({
       title: "Untitled",
     });
-    toast.promise(promise,{
-      loading:"Creating a page...",
-      success:"Page created successfully",
-      error:"Failed to create a page"
-    })
+    toast.promise(promise, {
+      loading: "Creating a page...",
+      success: "Page created successfully",
+      error: "Failed to create a page",
+    });
   };
 
   return (
-    <div className="h-full flex flex-col items-center justify-center  px-4">
+    <div className="h-full flex flex-col items-center justify-center px-4">
       <div className="relative">
         <Image
           src={"/workspace.png"}
@@ -40,12 +40,14 @@ const WorkspacePage = () => {
           Welcome back, {user?.firstName}
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400">
-          Your Clyro workspace
+          What are you studying today?
         </p>
-        <Button  onClick={handleCreate}  >
-           Create a page
-          <PlusIcon/>
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2 justify-center items-center pt-1">
+          <Button variant="outline" onClick={handleCreate}>
+            Create a page
+            <PlusIcon className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );

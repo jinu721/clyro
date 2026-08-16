@@ -82,6 +82,7 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
             level={level}
             onExpand={() => onExpand(doc._id)}
             expanded={expanded[doc._id]}
+            isAi={doc.source === "ai"}
           />
           {expanded[doc._id] && (
             <DocumentList parentDocumentId={doc._id} level={level + 1} />

@@ -5,35 +5,33 @@ import { useConvexAuth } from "convex/react";
 import { redirect } from "next/navigation";
 import Navbar from "./_components/navigation";
 import { SearchCommand } from "@/components/search-command";
+import { AiChatPanel } from "@/components/ai-chat-panel";
 
-const WorkspaceLayout = ({children}:{
-    children:React.ReactNode
-}) => {
+const WorkspaceLayout = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
-    const {isAuthenticated,isLoading} = useConvexAuth();
-
-    if(isLoading){
-        return (
-            <div className="h-full flex items-center justify-center" >
-                <Spinner size={40} />
-            </div>
-        )
-    }
-
-
-    if(!isAuthenticated){
-        return redirect("/");
-    }
-
+  if (isLoading) {
     return (
-        <div className="h-screen flex bg-[#FFFFFF] dark:bg-[#1E1E1E]" >
-            <Navbar/>
-            <main className="flex-1 h-full overflow-y-auto dark:bg-[#191919]" >
-                <SearchCommand/>
-              {children}
-            </main>
-        </div>
-    )
-}
+      <div className="h-full flex items-center justify-center">
+        <Spinner size={40} />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return redirect("/");
+  }
+
+  return (
+    <div className="h-screen flex overflow-hidden bg-[#FFFFFF] dark:bg-[#1E1E1E]">
+      <Navbar />
+      <main className="flex-1 min-w-0 h-full overflow-y-auto dark:bg-[#191919]">
+        <SearchCommand />
+        {children}
+      </main>
+      <AiChatPanel />
+    </div>
+  );
+};
 
 export default WorkspaceLayout;
